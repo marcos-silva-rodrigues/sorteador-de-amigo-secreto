@@ -1,0 +1,19 @@
+.form {
+    display: flex;
+    border: 2px solid black;
+    border-radius: 37.5px;
+    box-shadow: 4px 4px 0px 0px #000;
+    max-width: 600px;
+    overflow: hidden;
+}
+
+.input {
+    outline: none;
+    border: none;
+    background-color: white;
+    flex: 3;
+}
+
+.button {
+    flex: 1
+}
