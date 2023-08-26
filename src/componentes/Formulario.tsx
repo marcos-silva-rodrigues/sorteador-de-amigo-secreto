@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import styles from "./Formulario.module.css"
-import { useAdicionarParticipante } from '../state/hooks/useAdicionarparticipante';
+import { useAdicionarParticipante } from '../state/hooks/useAdicionarParticipante';
 import { useMensagemDeErro } from '../state/hooks/useMensagemDeErro';
 
 const Formulario = () => {

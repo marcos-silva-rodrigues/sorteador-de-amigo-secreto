@@ -2,6 +2,7 @@ import React from 'react';
 import Formulario from './componentes/Formulario';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
+import Cabecalho from './componentes/Cabecalho';
 
 function App() {
   return (

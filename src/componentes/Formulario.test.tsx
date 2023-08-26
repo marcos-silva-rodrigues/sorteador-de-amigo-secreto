@@ -1,68 +1,108 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { RecoilRoot } from 'recoil';
 import Formulario from "./Formulario";
 
-test("Quando o input está vazio, novos participantes não podem ser adicionados", () => {
-    render(
-        <RecoilRoot>
-            <Formulario />
-        </RecoilRoot>
-    )
 
-    const input = screen.getByPlaceholderText("Insira os nomes dos participantes");
-    const botao = screen.getByRole('button');
+describe("Comportamento do formulario", () => {
+    test("Quando o input está vazio, novos participantes não podem ser adicionados", () => {
+        render(
+            <RecoilRoot>
+                <Formulario />
+            </RecoilRoot>
+        )
 
-    expect(input).toBeInTheDocument();
-    expect(botao).toBeDisabled();
+        const input = screen.getByPlaceholderText("Insira os nomes dos participantes");
+        const botao = screen.getByRole('button');
 
-});
+        expect(input).toBeInTheDocument();
+        expect(botao).toBeDisabled();
 
-test("Adicionar um participante caso exista umm nome preenchido", () => {
-    render(
-        <RecoilRoot>
-            <Formulario />
-        </RecoilRoot>
-    )
-
-    const input = screen.getByPlaceholderText("Insira os nomes dos participantes");
-    const botao = screen.getByRole('button')
-    fireEvent.change(input, {
-        target: {
-            value: 'Fulano teste'
-        }
     });
 
-    fireEvent.click(botao);
-    expect(input).toHaveFocus();
-    expect(input).toHaveValue("");
-})
+    test("Adicionar um participante caso exista umm nome preenchido", () => {
+        render(
+            <RecoilRoot>
+                <Formulario />
+            </RecoilRoot>
+        )
 
-test("Nomes duplicados não podem ser adicionados na lista", () => {
-    render(
-        <RecoilRoot>
-            <Formulario />
-        </RecoilRoot>
-    )
+        const input = screen.getByPlaceholderText("Insira os nomes dos participantes");
+        const botao = screen.getByRole('button')
+        fireEvent.change(input, {
+            target: {
+                value: 'Fulano teste'
+            }
+        });
 
-    const input = screen.getByPlaceholderText("Insira os nomes dos participantes");
-    const botao = screen.getByRole('button')
-    fireEvent.change(input, {
-        target: {
-            value: 'Fulano teste'
-        }
-    });
+        fireEvent.click(botao);
+        expect(input).toHaveFocus();
+        expect(input).toHaveValue("");
+    })
 
-    fireEvent.click(botao);
+    test("Nomes duplicados não podem ser adicionados na lista", () => {
+        render(
+            <RecoilRoot>
+                <Formulario />
+            </RecoilRoot>
+        )
 
-    fireEvent.change(input, {
-        target: {
-            value: 'Fulano teste'
-        }
-    });
+        const input = screen.getByPlaceholderText("Insira os nomes dos participantes");
+        const botao = screen.getByRole('button')
+        fireEvent.change(input, {
+            target: {
+                value: 'Fulano teste'
+            }
+        });
 
-    fireEvent.click(botao);
+        fireEvent.click(botao);
 
-    const mensagemDeErro = screen.getByRole('alert');
-    expect(mensagemDeErro.textContent).toBe("Nomes duplicados não são permitidos!")
+        fireEvent.change(input, {
+            target: {
+                value: 'Fulano teste'
+            }
+        });
+
+        fireEvent.click(botao);
+
+        const mensagemDeErro = screen.getByRole('alert');
+        expect(mensagemDeErro.textContent).toBe("Nomes duplicados não são permitidos!")
+    })
+
+    test("A mensagem de erro deve sumir apos os timers", () => {
+        jest.useFakeTimers();
+        render(
+            <RecoilRoot>
+                <Formulario />
+            </RecoilRoot>
+        )
+
+        const input = screen.getByPlaceholderText("Insira os nomes dos participantes");
+        const botao = screen.getByRole('button')
+        fireEvent.change(input, {
+            target: {
+                value: 'Fulano teste'
+            }
+        });
+
+        fireEvent.click(botao);
+
+        fireEvent.change(input, {
+            target: {
+                value: 'Fulano teste'
+            }
+        });
+
+        fireEvent.click(botao);
+
+        let mensagemDeErro = screen.queryByRole('alert');
+        expect(mensagemDeErro).toBeInTheDocument();
+
+        act(() => {
+            jest.runAllTimers();
+        })
+
+        mensagemDeErro = screen.queryByRole('alert');
+        expect(mensagemDeErro).toBeNull();
+    })
 })
