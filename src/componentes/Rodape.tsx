@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useListaDeParticipantes } from "../state/hooks/useListaDeParticipantes";
 import { useSorteador } from "../state/hooks/useSorteador";
+import './Rodape.css';
+
 
 const Rodape = () => {
     const participantes = useListaDeParticipantes();
@@ -19,10 +21,9 @@ const Rodape = () => {
                 disabled={participantes.length < 3}
                 onClick={iniciar}
             >
-                <img src="/imagens/sacolas.png" alt="Sacolas de compras" />
-
                 Iniciar brincadeira
             </button >
+            <img src="/imagens/sacolas.png" alt="Sacolas de compras" />
         </footer >
     )
 }
