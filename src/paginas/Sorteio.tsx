@@ -14,6 +14,9 @@ const Sorteio = () => {
         event.preventDefault();
         if (resultadoSorteio.has(participanteDavez)) {
             setAmigoSecreto(resultadoSorteio.get(participanteDavez)!)
+            setTimeout(() => {
+                setAmigoSecreto('');
+            }, 5000);
         }
     }
 
